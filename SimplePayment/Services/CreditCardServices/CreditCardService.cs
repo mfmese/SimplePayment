@@ -9,30 +9,32 @@ namespace SimplePayment.Services.CreditCardServices
     {
         CreditCardValidatePaymentResponse Validate(CreditCard creditCard);
     }
-    public class CreditCardService: ICreditCardService
+
+    public class CreditCardService : ICreditCardService
     {
         public CreditCardValidatePaymentResponse Validate(CreditCard creditCard)
         {
+            //Check general validations about credit card such as all fields provided and their types are correct.
             var validationErrors = creditCard.GetValidationResults();
 
             var isCardNumberNotExists = validationErrors.Any(x => x == ValidationMessages.CardNumberEmpty);
             if (isCardNumberNotExists)
-                return new CreditCardValidatePaymentResponse(CreditCardType.NotFoundCreditCard , validationErrors);
-
-            var card = CreditCardFactory.Create(creditCard);
-
-            if (card.GetName() == CreditCardType.NotFoundCreditCard)
                 return new CreditCardValidatePaymentResponse(CreditCardType.NotFoundCreditCard, validationErrors);
 
-            if (card.IsIssueDateExpired() == true)
+            creditCard = CreditCardFactory.Create(creditCard);
+
+            //Return from here when creditCard type not found because if there is no credittype found then cvc and expiredate validation are not necessary to check
+            if (creditCard.GetName() == CreditCardType.NotFoundCreditCard)
+                return new CreditCardValidatePaymentResponse(CreditCardType.NotFoundCreditCard, validationErrors);
+
+            if (creditCard.IsIssueDateExpired() == true)
                 validationErrors.Add(ValidationMessages.CreditCardExpired);
 
-            if (!card.IsCVCValid())
-                validationErrors.Add(string.Format(ValidationMessages.CVCNotValid,card.GetName()));  
+            if (!creditCard.IsCVCValid())
+                validationErrors.Add(string.Format(ValidationMessages.CVCNotValid, creditCard.GetName()));
 
-            return new CreditCardValidatePaymentResponse(card.GetName(), validationErrors);
+            return new CreditCardValidatePaymentResponse(creditCard.GetName(), validationErrors);
         }
-    
     }
 
     public class CreditCardValidatePaymentResponse
@@ -44,7 +46,7 @@ namespace SimplePayment.Services.CreditCardServices
         }
 
         public string CreditCardType { get; set; }
-        public List<string> ValidationErrors { get; set; }        
+        public List<string> ValidationErrors { get; set; }
     }
 }
 

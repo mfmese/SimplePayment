@@ -3,9 +3,8 @@ using Microsoft.Extensions.Logging;
 using SimplePayment.Controllers.Models;
 using SimplePayment.Services.CreditCardServices;
 using SimplePayment.Services.CreditCardServices.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace SimplePayment.Controllers
 {
@@ -25,9 +24,15 @@ namespace SimplePayment.Controllers
         [HttpGet]
         public ValidateCreditCardResponse ValidateCreditCard([FromQuery] ValidateCreditCardRequest request)
         {
+            var sw = new Stopwatch();
+            sw.Start();
+            _logger.LogInformation($"{nameof(ValidateCreditCard)} started. Request: {JsonSerializer.Serialize(request)}");
             var issueDate = new IssueDate(request.IssueDateYear, request.IssueDateMonth);
             var creditCard = new CreditCard(request.CardOwner, request.CardNumber, issueDate, request.CVC);
             var response = _creditCardService.Validate(creditCard);
+
+            sw.Stop();
+            _logger.LogInformation($"{nameof(ValidateCreditCard)} finished in {sw.ElapsedMilliseconds} miliseconds, Response: {JsonSerializer.Serialize(response)}");
             return new ValidateCreditCardResponse(response);
         }
     }

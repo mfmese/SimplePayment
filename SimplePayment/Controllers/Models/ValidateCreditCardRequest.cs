@@ -1,10 +1,4 @@
-﻿using SimplePayment.Services.CreditCardServices.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace SimplePayment.Controllers.Models
+﻿namespace SimplePayment.Controllers.Models
 {
     public class ValidateCreditCardRequest
     {

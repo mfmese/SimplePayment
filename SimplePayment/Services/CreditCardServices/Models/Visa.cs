@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
-namespace SimplePayment.Services.CreditCardServices.Models
+﻿namespace SimplePayment.Services.CreditCardServices.Models
 {
     public class Visa: CreditCard
     {
@@ -12,10 +6,6 @@ namespace SimplePayment.Services.CreditCardServices.Models
         {
         }
         public override string GetName() => CreditCardType.Visa;
-        public override bool IsCVCValid()
-        {
-            return CVC.ToString().Length == 3;
-        }
-
+        public override bool IsCVCValid() => CVC.ToString().Length == 3;
     }
 }

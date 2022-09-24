@@ -2,7 +2,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SimplePayment.Services.CreditCardServices;
 using SimplePayment.Services.CreditCardServices.Models;
 using SimplePayment.Validations;
-using System;
 using System.Linq;
 
 namespace SimplePaymentTest.Services.CreditCardServices
@@ -61,7 +60,7 @@ namespace SimplePaymentTest.Services.CreditCardServices
         [TestMethod]
         public void Validate_CreditCardInputs_ReturnCreditCardExpired()
         {
-            var creditCard = new CreditCard("Fethi", "111111", new IssueDate("21", "01"), 3444);
+            var creditCard = new CreditCard("Fethi", "4012888888881881", new IssueDate("21", "01"), 3444);
 
             var response = _service.Validate(creditCard);
 
@@ -73,7 +72,7 @@ namespace SimplePaymentTest.Services.CreditCardServices
         [TestMethod]
         public void Validate_CreditCardInputs_ReturnCvcNotValid()
         {
-            var creditCard = new CreditCard("Fethi", "111111", new IssueDate("26", "01"), 44);
+            var creditCard = new CreditCard("Fethi", "4012888888881881", new IssueDate("26", "01"), 44);
 
             var response = _service.Validate(creditCard);
 

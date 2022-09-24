@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-
-namespace SimplePayment.Services.CreditCardServices.Models
+﻿namespace SimplePayment.Services.CreditCardServices.Models
 {
     public class AmericanExpress : CreditCard
     {
@@ -12,10 +6,6 @@ namespace SimplePayment.Services.CreditCardServices.Models
         {
         }
         public override string GetName() => CreditCardType.AmericanExpress;
-
-        public override bool IsCVCValid()
-        {
-            return CVC.ToString().Length == 4;
-        }
+        public override bool IsCVCValid() => CVC.ToString().Length == 4;
     }
 }
